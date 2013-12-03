@@ -18,6 +18,35 @@
             <RowDefinition Height="200" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
+        <Grid Name="ControlsGrid"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       Margin="10,5,0,0"
+                       Text="Search book titles:" />
+            <TextBox Name="SearchTextBlock"
+                       Grid.Column="1"
+                       Width="100"
+                       Padding="2"
+                       Height="20"/>
+            <Button Name="SearchButton"
+                    Grid.Column="2"
+                    Content="Search"
+                    Height="20"
+                    Margin="5,0,0,0"
+                    Click="SearchButton_Click" />
+            <sdk:DataPager Name="BookPager"
+                           PageSize="5"
+                           DisplayMode="PreviousNextNumeric"
+                           Grid.Column="4"/>
+
+        </Grid>
         <sdk:DataGrid x:Name="BookDataGrid"
                       AutoGenerateColumns="False"
                       RowBackground="#999999"
@@ -80,11 +109,13 @@
                     Content="Add new book"
                     Margin="0,0,10,10"
                     Width="100"
+                    Height="20"
                     Click="AddBookButton_Click" />
             <Button x:Name="DeleteBookButton"
                     Content="Delete"
                     Margin="0,0,10,10"
                     Width="100"
+                    Height="20"
                     Click="DeleteBookButton_Click" />
         </StackPanel>
         <Grid DataContext="{Binding ElementName=BookDataGrid, Path=SelectedItem}" 

@@ -26,14 +26,20 @@ namespace MyBookLibrary
             InitializeComponent();
             LoadBooks();
             
+            //Create view with sorting and goruping
             view = new PagedCollectionView(_bookCollection);
             view.SortDescriptions.Add(new SortDescription("Title", ListSortDirection.Descending));
             view.GroupDescriptions.Add(new PropertyGroupDescription("Language"));
-            BookDataGrid.ItemsSource = view;
 
+            //Set view to the data grid and pager
+            BookDataGrid.ItemsSource = view;
+            BookPager.Source = view;
             //BookDataGrid.ItemsSource = _bookCollection;
         }
 
+        /// <summary>
+        /// Load books to the data grid
+        /// </summary>
         private void LoadBooks()
         {
             _bookCollection = new ObservableCollection<Book> 
@@ -114,6 +120,33 @@ namespace MyBookLibrary
             };
         }
 
+        /// <summary>
+        /// Add empty book to the data grid
+        /// </summary>
+        private void AddEmptyBook()
+        {
+            Book newBook = new Book();
+            _bookCollection.Add(newBook);
+        }
+
+        /// <summary>
+        /// Remove selected book from data grid
+        /// </summary>
+        private void RemoveBook()
+        {
+            if (BookDataGrid.SelectedItem != null)
+            {
+                Book deletedBook = BookDataGrid.SelectedItem as Book;
+                _bookCollection.Remove(deletedBook);
+            }
+        }
+
+        private bool Search(object obj)
+        {
+            Book book = obj as Book;
+            return book.Title.Contains(SearchTextBlock.Text);
+        }
+
         private void BookDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             Book loadedBook = e.Row.DataContext as Book;
@@ -132,21 +165,6 @@ namespace MyBookLibrary
             else if (e.Key == Key.Insert && !_cellEditing)
             {
                 AddEmptyBook();
-            }
-        }
-
-        private void AddEmptyBook()
-        {
-            Book newBook = new Book();
-            _bookCollection.Add(newBook);
-        }
-
-        private void RemoveBook()
-        {
-            if (BookDataGrid.SelectedItem != null)
-            {
-                Book deletedBook = BookDataGrid.SelectedItem as Book;
-                _bookCollection.Remove(deletedBook);
             }
         }
 
@@ -169,5 +187,13 @@ namespace MyBookLibrary
         {
             AddEmptyBook();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            view.Filter = null;
+            view.Filter = new Predicate<object>(Search);
+        }
+
+        
     }
 }

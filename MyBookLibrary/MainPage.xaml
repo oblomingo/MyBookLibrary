@@ -4,11 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+             xmlns:local="clr-namespace:MyBookLibrary"
              x:Class="MyBookLibrary.MainPage"
              mc:Ignorable="d"
              d:DesignHeight="600"
              d:DesignWidth="800">
-
+    <UserControl.Resources>
+        <DataTemplate x:Name="ImageTemplate">
+            <Image Source="{Binding ImageName}"
+                    Height="30">
+            </Image>
+        </DataTemplate>
+        <local:LanguageHelper x:Key="LanguageHelper" />
+    </UserControl.Resources>
     <Grid x:Name="LayoutRoot"
           Background="White">
         <Grid.RowDefinitions>
@@ -62,6 +70,16 @@
                       Grid.Row="2"
                       Grid.RowSpan="2">
             <sdk:DataGrid.Columns>
+                <sdk:DataGridTemplateColumn x:Name="ImageColumn" Header="Image">
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding ImageName}"
+                                   Height="30"
+                                   Margin="2">
+                            </Image>
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>
+                </sdk:DataGridTemplateColumn>
                 <sdk:DataGridTextColumn x:Name="CopyTitleColumn"
                                         Binding="{Binding Title}"
                                         Header="Title">
